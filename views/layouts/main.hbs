@@ -5,21 +5,70 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- Materialize CSS -->
   <link rel="stylesheet" href="/materialize/css/materialize.css">
-  <!-- Materialize JS -->
-  <script type="text/javascript" src="/materialize/js/materialize.js"></script>
-
   <title>{{ title }}</title>
-
+  <style>
+    main{
+      min-height: calc(100vh - 280px);
+    }
+  </style>
 </head>
 <body>
   <header>
+    <nav>
+      <div class="nav-wrapper  purple darken-2">
+        <a href="/" class="heading" style="font-size: 5vh; margin-left: 1vw">StoryBooks</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons hide-on-med-and-up">menu</i></a>
+        <ul class="right hide-on-small-only">
+          <li><a href="/">Public Stories</a></li>
+          <li><a href="/users/login">Login</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <ul class="sidenav hide-on-med-and-up" id="mobile-demo">
+      <li><a href="/">Public Stories</a></li>
+      <li><a href="/users/login">Login</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
   </header>
   <main>
     {{{ body }}}
   </main>
+  <footer class="page-footer purple darken-2">
+    <div class="container">
+      <div class="row">
+        <div class="col m6 s12">
+          <h5 class="white-text">StoryBooks</h5>
+          <p class="grey-text text-lighten-4">Share your life with the world.</p>
+        </div>
+        <div class="col m4 offset-m2 s12">
+          <h5 class="white-text">Links</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="/">Public Stories</a></li>
+            <li><a class="grey-text text-lighten-3" href="/about">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        © 2014 Copyright Text
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+      </div>
+    </div>
+  </footer>
+  <!-- Materialize JS -->
+  <script type="text/javascript" src="/materialize/js/materialize.js"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let elems = document.querySelectorAll('.sidenav');
+      let instances = M.Sidenav.init(elems);
+    });
   </script>
 </body>
 </html>
