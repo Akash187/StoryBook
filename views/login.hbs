@@ -38,7 +38,8 @@
             <h4 class="center">Create your account</h4>
             <div class="signup-img">
               <img id="profile-img" src="/images/user.png">
-              <i class="medium material-icons">add_circle</i>
+              <input type="file" id="myFileInput" />
+              <i onclick="selectImageAndCrop()" class="medium material-icons">add_circle</i>
             </div>
             <div id="login-form">
               <div class="input-field col s12">
@@ -67,8 +68,30 @@
 </div>
 
 <script>
+
   document.addEventListener('DOMContentLoaded', function() {
-    let elems = document.querySelectorAll('.tabs');
-    let instance = M.Tabs.init(elems);
+    let elem = document.querySelectorAll('.tabs');
+    let instance = M.Tabs.init(elem);
   });
+
+  function selectImageAndCrop(){
+    document.getElementById('myFileInput').click();
+  }
+
+  let src = document.getElementById("myFileInput");
+  let target = document.getElementById("profile-img");
+  showImage(src,target);
+
+  function showImage(src,target) {
+    let fr=new FileReader();
+    // when image is loaded, set the src of the image where you want to display it
+    fr.onload = function(e) {
+      target.src = this.result;
+    };
+    src.addEventListener("change",function() {
+      // fill fr with image data
+      fr.readAsDataURL(src.files[0]);
+    });
+  }
+
 </script>
