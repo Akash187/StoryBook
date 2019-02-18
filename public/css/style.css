@@ -1,0 +1,66 @@
+main{
+    min-height: calc(100vh - 271px);
+}
+
+h4{
+    margin-bottom: 2rem;
+}
+
+.login-card{
+    padding-bottom: 0.5rem;
+    margin: 3rem 0;
+}
+
+#google-signIn-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#google-signIn-btn img{
+    width: 24px;
+    margin-right: 0.5rem;
+}
+
+.divider{
+    position: relative;
+    bottom: -2.125rem;
+}
+
+.divider-text{
+    margin: 1rem 0 0;
+}
+
+#login-form{
+    margin: 1rem 0;
+}
+
+.login-btn{
+    margin: 2vw 0;
+}
+
+.signup-img{
+    display: flex;
+    justify-content: center;
+}
+
+.signup-img img{
+    width: 128px;
+    height: 128px;
+    margin-left: 4rem;
+    border-radius: 50%;
+}
+
+.signup-img i{
+    color: #1ba11c;
+    position: relative;
+    bottom: -6rem;
+    left: -2.5rem;
+    height: 56px;
+    cursor: pointer;
+}
+
+#myFileInput{
+    display: none;
+}
+
