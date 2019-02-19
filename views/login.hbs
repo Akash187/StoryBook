@@ -36,30 +36,32 @@
         <div class="container">
           <div id="signup" class="col s12">
             <h4 class="center">Create your account</h4>
-            <div class="signup-img">
-              <img id="profile-img" src="/images/user.png">
-              <input type="file" id="myFileInput" />
-              <i onclick="selectImageAndCrop()" class="medium material-icons">add_circle</i>
-            </div>
-            <div id="login-form">
-              <div class="input-field col s12">
-                <input id="name" type="text" class="validate">
-                <label for="name">Name</label>
+            <form action="/register" method="post" encType="multipart/form-data">
+              <div class="signup-img">
+                <img id="profile-img" src="/images/user.png">
+                <i onclick="selectImage()" class="medium material-icons">add_circle</i>
+                  <input type="file" id="myFileInput" name="myImage"/>
               </div>
-              <div class="input-field col s12">
-                <input id="email" type="email" class="validate">
-                <label for="email">Email</label>
+              <div id="register-form">
+                <div class="input-field col s12">
+                  <input id="name" type="text" name="name" class="validate" pattern="[A-Za-z]{3,}" title="Minimum three letter name." required>
+                  <label for="name">Name</label>
+                </div>
+                <div class="input-field col s12">
+                  <input id="email" type="email" name="email" class="validate" required>
+                  <label for="email">Email</label>
+                </div>
+                <div class="input-field col s12">
+                  <input id="password" type="password" name="password" class="validate" pattern="[\w|\W]{6,}" title="Password must be 6 character long." required>
+                  <label for="password">Password</label>
+                </div>
+                <div class="input-field col s12">
+                  <input id="confirm_password" class="validate" type="password" required>
+                  <label for="confirm_password">Confirm Password</label>
+                </div>
               </div>
-              <div class="input-field col s12">
-                <input id="password" type="password" class="validate">
-                <label for="password">Password</label>
-              </div>
-              <div class="input-field col s12">
-                <input id="confirm-password" type="password" class="validate">
-                <label for="confirm-password">Confirm Password</label>
-              </div>
-            </div>
-            <a class="waves-effect waves-light blue btn col s12 login-btn">Sign Up</a>
+              <button class="waves-effect waves-light blue btn col s12 login-btn">Sign Up</button>
+            </form>
           </div>
         </div>
       </div>
@@ -74,7 +76,7 @@
     let instance = M.Tabs.init(elem);
   });
 
-  function selectImageAndCrop(){
+  function selectImage(){
     document.getElementById('myFileInput').click();
   }
 
@@ -93,5 +95,19 @@
       fr.readAsDataURL(src.files[0]);
     });
   }
+
+  let password = document.getElementById("password");
+  let confirm_password = document.getElementById("confirm_password");
+
+  function validatePassword(){
+    if(password.value !== confirm_password.value) {
+      confirm_password.setCustomValidity("Passwords Don't Match");
+    } else {
+      confirm_password.setCustomValidity('');
+    }
+  }
+
+  password.onchange = validatePassword;
+  confirm_password.onkeyup = validatePassword;
 
 </script>
