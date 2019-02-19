@@ -14,20 +14,20 @@ const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: "uploads",
   allowedFormats: ["jpg", "png", "jpeg", "gif"],
-  transformation: [{ width: 480, height: 480, crop: "fill" }]
+  transformation: [{width: 480, height: 480, crop: "fill"}]
 });
 
-const parser = multer({ storage: storage }).single("myImage");
+const parser = multer({storage: storage}).single("myImage");
 
 router.post('/register', (req, res) => {
-    parser(req, res, (err) => {
-    if(err){
+  parser(req, res, (err) => {
+    if (err) {
       console.log('first err', err);
       res.send({
         msg: err
       });
     } else {
-      if(req.file === undefined){
+      if (req.file === undefined) {
         res.status(400).send({
           msg: 'Error: Unable to upload File!'
         });
@@ -53,5 +53,8 @@ router.get('/', (req, res) => res.render('home', {title: 'Home Page'}));
 
 //About Page
 router.get('/about', (req, res) => res.render('about', {title: 'About Page'}));
+
+//Show Page
+router.get('/show/:id', (req, res) => res.render('show', {title: 'Detail Page'}));
 
 module.exports = router;

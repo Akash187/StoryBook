@@ -1,9 +1,17 @@
 main{
-    min-height: calc(100vh - 265px);
+    min-height: calc(100vh - 271px);
 }
 
-h4{
+.container{
+    width: 90% !important;
+}
+
+.login-form-title{
     margin-bottom: 2rem;
+}
+
+.container{
+
 }
 
 .login-card{
@@ -90,5 +98,37 @@ h4{
 
 .chip{
     margin: 0 2rem;
+}
+
+.profile-img{
+    display: flex;
+    justify-content: center;
+}
+
+.profile-img img{
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.card-action a{
+    margin-right: 0 !important;
+}
+
+.article-title{
+    display: flex;
+    align-items: center;
+}
+
+.article-title a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-icon{
+    cursor: pointer;
+    margin-left: 1rem;
 }
 
