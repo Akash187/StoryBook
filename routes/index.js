@@ -51,6 +51,12 @@ router.post('/register', (req, res) => {
 // Welcome Page
 router.get('/', (req, res) => res.render('home', {title: 'Home Page'}));
 
+//Dashboard Page
+router.get('/dashboard', (req, res) => res.render('dashboard', {title: 'Dashboard Page'}));
+
+//Add Page
+router.get('/add', (req, res) => res.render('add', {title: 'Add Page'}));
+
 //About Page
 router.get('/about', (req, res) => res.render('about', {title: 'About Page'}));
 
