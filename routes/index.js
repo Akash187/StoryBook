@@ -57,6 +57,13 @@ router.get('/dashboard', (req, res) => res.render('dashboard', {title: 'Dashboar
 //Add Page
 router.get('/add', (req, res) => res.render('add', {title: 'Add Page'}));
 
+
+//Add Story
+router.post('/add', (req, res) => {
+  console.log(req.body);
+  res.redirect('/add');
+});
+
 //About Page
 router.get('/about', (req, res) => res.render('about', {title: 'About Page'}));
 

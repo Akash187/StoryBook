@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row">
+    <h3>Add Story</h3>
+    <form action="/add" method="post" onsubmit="addDetail()" encType="application/x-www-form-urlencoded">
+      <div class="input-field col s12">
+        <input id="title" type="text" name="title" class="validate" pattern="[\w|\W]{5,}" title="Title must be atleast 5 character long." required>
+        <label for="title">Title</label>
+      </div>
+      <div class="input-field col s12">
+        <select name="status">
+          <option value="public" selected>Public</option>
+          <option value="private">Private</option>
+        </select>
+        <label>Status</label>
+      </div>
+      <div class="col s12">
+        <p>
+          <label>
+            <input type="checkbox" checked="checked" name="comment"/>
+            <span>Allow Comment</span>
+          </label>
+        </p>
+      </div>
+      <div class="col s12">
+        <h5>Tell Us Your Story:</h5>
+      </div>
+      <div class="input-field col s12 hide">
+        <input id="story-detail" type="text" name="content">
+      </div>
+      <div class="col s12">
+        <textarea id="editor">
+          {{!--{{{data}}}--}}
+        </textarea>
+      </div>
+      <div class="col s12" style="margin-top: 1rem">
+        <button type="submit" id="submit" class="waves-effect waves-light btn">submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="/js/ckeditor.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let elem = document.querySelectorAll('select');
+    let instances = M.FormSelect.init(elem);
+  });
+
+  let editor;
+
+  ClassicEditor
+      .create( document.querySelector( '#editor' ),{
+        cloudServices: {
+          uploadUrl: 'https://37584.cke-cs.com/easyimage/upload/',
+          tokenUrl: 'https://37584.cke-cs.com/token/dev/OXvcaHoBkg1aBtEbfbf14lcI91tkI4WC0TkRZ4pVDZIAP6hfKFbR5bs07hms'
+        },
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'],
+        heading: {
+          options: [
+            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+          ]
+        }
+      })
+      .then( newEditor => {
+        editor = newEditor;
+      } )
+      .catch( error => {
+        console.error( error );
+      } );
+
+  function addDetail() {
+    document.getElementById('story-detail').value = editor.getData();
+    let detail = document.getElementById('story-detail').value;
+    console.log(detail.length);
+    return false;
+  }
+  // Assuming there is a <button id="submit">Submit</button> in your application.
+  document.querySelector( '#submit' ).addEventListener( 'click', () => {
+    const editorData = editor.getData();
+    console.log(editorData);
+    // ...
+  });
+</script>
