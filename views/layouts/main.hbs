@@ -39,6 +39,8 @@
   <main class="section">
     {{{ body }}}
   </main>
+  {{!--partials to disable button if offline.--}}
+  {{> offlineAlert}}
 
   {{!--floating Button to add article--}}
   <a class="btn-floating btn-large waves-effect waves-light orange accent-4" href="/add"><i class="material-icons">add</i></a>

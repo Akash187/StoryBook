@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
-    <h3>Add Story</h3>
-    <form action="/add" method="post" onsubmit="addDetail()" encType="application/x-www-form-urlencoded">
+    <h3>Edit Story</h3>
+    <form action="/edit" method="post" onsubmit="addDetail()" encType="application/x-www-form-urlencoded">
       <div class="input-field col s12">
         <input id="title" type="text" name="title" class="validate" pattern="[\w|\W]{5,}" title="Title must be atleast 5 character long." required>
         <label for="title">Title</label>
@@ -75,4 +75,10 @@
     console.log(detail.length);
     return false;
   }
+  // Assuming there is a <button id="submit">Submit</button> in your application.
+  document.querySelector( '#submit' ).addEventListener( 'click', () => {
+    const editorData = editor.getData();
+    console.log(editorData);
+    // ...
+  });
 </script>

@@ -57,17 +57,19 @@ router.get('/dashboard', (req, res) => res.render('dashboard', {title: 'Dashboar
 //Add Page
 router.get('/add', (req, res) => res.render('add', {title: 'Add Page'}));
 
-
 //Add Story
 router.post('/add', (req, res) => {
   console.log(req.body);
   res.redirect('/add');
 });
 
+//Edit Page
+router.get('/edit/:id', (req, res) => res.render('edit', {title: 'Edit Page'}));
+
 //About Page
 router.get('/about', (req, res) => res.render('about', {title: 'About Page'}));
 
 //Show Page
-router.get('/show/:id', (req, res) => res.render('show', {title: 'Detail Page'}));
+router.get('/show/:id', (req, res) => res.render('show', {title: 'Detail Page', error: 'This is a test toast'}));
 
 module.exports = router;

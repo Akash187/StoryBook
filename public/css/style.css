@@ -1,5 +1,5 @@
 main{
-    min-height: calc(100vh - 271px);
+    min-height: calc(100vh - 265px);
 }
 
 .container{
@@ -87,21 +87,13 @@ td{
     padding: 0;
 }
 
-.story_summary_detail{
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    min-height: 84px;
-}
-
 .chip-container{
     margin-bottom: 1rem;
     display: flex;
     justify-content: center;
 }
 
-.chip{
+.stories-chip{
     margin: 0 2rem;
 }
 

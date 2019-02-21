@@ -1,0 +1,36 @@
+<script>
+  let toastHTML = `<span>You are offline.</span><button onclick="dismissToast()" class="btn-flat toast-action">X</button>`;
+  let showOfflineToast = true;
+  let showOnlineToast = false;
+
+  function checkOffline(){
+    let x = document.querySelectorAll(".btn");
+    if(!navigator.onLine){
+      for (let i = 0; i < x.length; i++) {
+        x[i].disabled = true;
+      }
+      if(showOfflineToast){
+        M.toast({html: toastHTML});
+        showOfflineToast = false;
+        showOnlineToast = true;
+      }
+    }else{
+      if(showOnlineToast){
+        M.toast({html: "You are Online"});
+        showOnlineToast = false;
+        location.reload();
+      }
+      for (let i = 0; i < x.length; i++) {
+        x[i].disabled = false;
+      }
+    }
+  }
+
+  offlineTimer = setInterval(checkOffline, 1000);
+
+  function dismissToast(){
+    let toastElement = document.querySelector('.toast');
+    let toastInstance = M.Toast.getInstance(toastElement);
+    toastInstance.dismiss();
+  }
+</script>
