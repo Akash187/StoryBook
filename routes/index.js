@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const cloudinary = require('cloudinary');
 const cloudinaryStorage = require("multer-storage-cloudinary");
+const sanitizeHtml = require("sanitize-html");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -59,8 +60,26 @@ router.get('/add', (req, res) => res.render('add', {title: 'Add Page'}));
 
 //Add Story
 router.post('/add', (req, res) => {
-  console.log(req.body);
-  res.redirect('/add');
+  //console.log(req.body);
+  let clean = sanitizeHtml(req.body.content, {
+    allowedTags: ['figure','img','h4', 'h5', 'h6', 'p', 'blockquote', 'i', 'strong', 'a', 'li', 'ul', 'ol','table', 'thead', 'tr', 'th', 'td', 'tbody'],
+    allowedAttributes: {
+      'a': [ 'href' ],
+      'img': [ 'src' ],
+      'th': ['colspan', 'rowspan'],
+      'td': ['colspan', 'rowspan'],
+      'figure': ['class']
+    }
+  });
+  console.log(clean);
+  let content = '';
+  if(typeof req.body.content === "string"){
+    content = req.body.content;
+  }else{
+    content = req.body.content[1];
+  }
+  console.log(content);
+  //res.render('show', {detail: clean});
 });
 
 //Edit Page

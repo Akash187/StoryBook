@@ -1,5 +1,5 @@
 <script>
-  let toastHTML = `<span>You are offline.</span><button onclick="dismissToast()" class="btn-flat toast-action">X</button>`;
+  let toastHTML = `<span class="red-text">You are offline.</span><button onclick="dismissToast()" class="btn-flat toast-action">X</button>`;
   let showOfflineToast = true;
   let showOnlineToast = false;
 
@@ -16,7 +16,7 @@
       }
     }else{
       if(showOnlineToast){
-        M.toast({html: "You are Online"});
+        M.toast({html: "<span class='green-text'>You are online.</span><button onclick=\"dismissToast()\" class=\"btn-flat toast-action\">X</button>"});
         showOnlineToast = false;
         location.reload();
       }

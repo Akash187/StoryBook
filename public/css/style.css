@@ -113,9 +113,65 @@ td{
     margin-right: 0 !important;
 }
 
-.article-title{
+.show-detail{
+    max-width: 100%;
+}
+
+.show-detail img{
+    max-width: 100%;
+    max-height: 480px;
+    object-fit: fill;
+}
+
+/*Removing materialize default ul and li style*/
+.show-detail ul:not(.browser-default) {
+    padding-left: 40px !important;
+    list-style-type: inherit !important;
+}
+
+.show-detail ul:not(.browser-default) > li {
+    list-style-type: inherit !important;
+}
+
+.show-detail figure{
     display: flex;
     align-items: center;
+    flex-direction: column;
+}
+
+.show-detail table, th, td {
+    border: 1px solid #ddd;
+}
+
+.show-detail th{
+    text-align: center;
+    background: #fafafa;
+}
+
+/*Removing materialize default ul and li style*/
+.ck-editor__main ul:not(.browser-default) {
+    padding-left: 40px !important;
+    list-style-type: inherit !important;
+}
+
+.ck-editor__main ul:not(.browser-default) > li {
+    list-style-type: inherit !important;
+}
+
+figure{
+    margin: 0 0 !important;
+}
+
+figcaption{
+    background: gainsboro;
+    width: 100%;
+    text-align: center;
+}
+
+.article-title{
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 2rem;
 }
 
 .article-title a{
@@ -127,4 +183,5 @@ td{
 .edit-icon{
     cursor: pointer;
 }
+
 

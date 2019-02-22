@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
-console.log(path.join(__dirname + '/../views/partials/'));
+//console.log(path.join(__dirname + '/../views/partials/'));
 
 app.use(express.static(path.join(__dirname, '../public')));
 
