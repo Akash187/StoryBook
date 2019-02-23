@@ -45,7 +45,11 @@ router.get('/read/:id', (req, res) => {
           'figure': ['class']
         }
       });
-      const Comments = story[0].comments.map(comment => {
+      //sorting comment in descending order of date
+      const sortedComment = story[0].comments.sort(function(a, b){
+        return b.date - a.date
+      });
+      const Comments = sortedComment.map(comment => {
         return {
           body : comment.body,
           date : moment.unix(comment.date).format("MMMM Do YYYY")
