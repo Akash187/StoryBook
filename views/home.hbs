@@ -1,79 +1,28 @@
 <div class="container">
-  <h3 class="page_title">Stories</h3>
+  <h3 class="page_title">{{pageTitle}}</h3>
   <div class="row">
+  {{#each stories}}
     <div class="col s12 m6 l4">
       <div class="card">
         <div class="card-content white-text">
-          <span class="card-title blue-grey-text truncate">The Boy Who Cried Wolf</span>
+          <span class="card-title blue-grey-text truncate">{{this.storyTitle}}</span>
+          <p class="truncate green-text">{{this.createdAt}}</p>
         </div>
         <div class="chip-container">
           <div class="chip stories-chip truncate blue-text">
-            <img src="/images/default_user_img.png" alt="Contact Person">
-            Akash Kumar Seth
+            <img src="{{this.profileImg}}" alt="Contact Person">
+            {{this.creator}}
           </div>
         </div>
         <div class="card-action center">
-          <a class="btn waves-effect waves-light" href="/show/2342343fdfdtdfgffd">Read</a>
+          <a class="btn waves-effect waves-light" href="/stories/read/{{this._id}}">Read</a>
         </div>
       </div>
     </div>
+  {{else}}
     <div class="col s12 m6 l4">
-      <div class="card">
-        <div class="card-content white-text">
-          <span class="card-title blue-grey-text truncate">
-            This is an extremely long title that will be truncated.
-          </span>
-          <p class="orange-text story_summary_detail">
-            I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively. Now It will truncate.
-          </p>
-        </div>
-        <div class="chip-container">
-          <div class="chip truncate blue-text">
-            <img src="/images/default_user_img.png" alt="Contact Person">
-            Akash Kumar Seth Ayush Singh Rishabh
-          </div>
-        </div>
-        <div class="card-action center">
-          <a class="btn waves-effect waves-light" href="/show/2342343fdfdtdfgffd">Show More</a>
-        </div>
-      </div>
+      <h5>No Public Stories.</h5>
     </div>
-    <div class="col s12 m6 l4">
-      <div class="card">
-        <div class="card-content white-text">
-          <span class="card-title blue-grey-text truncate">This is an extremely long title that will be truncated</span>
-          <p class="orange-text story_summary_detail">I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively. Now It will truncate.</p>
-        </div>
-        <div class="chip-container">
-          <div class="chip truncate blue-text">
-            <img src="/images/default_user_img.png" alt="Contact Person">
-            Akash Kumar Seth Ayush Singh Rishabh
-          </div>
-        </div>
-        <div class="card-action center">
-          <a class="btn waves-effect waves-light" href="#">Show More</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m6 l4">
-      <div class="card">
-        <div class="card-content white-text">
-          <span class="card-title blue-grey-text truncate">This is an extremely long title that will be truncated</span>
-          <p class="orange-text story_summary_detail">I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively. Now It will truncate.</p>
-        </div>
-        <div class="chip-container">
-          <div class="chip truncate blue-text">
-            <img src="/images/default_user_img.png" alt="Contact Person">
-            Akash Kumar Seth
-          </div>
-        </div>
-        <div class="card-action center">
-          <a class="btn waves-effect waves-light" href="#">Show More</a>
-        </div>
-      </div>
-    </div>
+  {{/each}}
   </div>
 </div>

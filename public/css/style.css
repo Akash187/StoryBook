@@ -6,8 +6,8 @@ main{
     width: 90% !important;
 }
 
-td{
-    max-width: 15rem;
+td.truncate{
+    max-width: 25rem;
 }
 
 .btn-floating{
@@ -139,7 +139,15 @@ td{
     flex-direction: column;
 }
 
-.show-detail table, th, td {
+.show-detail table{
+    border: 1px solid #ddd;
+}
+
+.show-detail table th {
+    border: 1px solid #ddd;
+}
+
+.show-detail td {
     border: 1px solid #ddd;
 }
 

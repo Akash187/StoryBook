@@ -43,7 +43,7 @@
   {{> offlineAlert}}
 
   {{!--floating Button to add article--}}
-  <a class="btn-floating btn-large waves-effect waves-light orange accent-4" href="/add"><i class="material-icons">add</i></a>
+  <a class="btn-floating btn-large waves-effect waves-light orange accent-4" href="/stories/add"><i class="material-icons">add</i></a>
 
   {{!--footer--}}
   <footer class="page-footer purple darken-2">
@@ -75,6 +75,11 @@
       let elems = document.querySelectorAll('.sidenav');
       let instances = M.Sidenav.init(elems);
     });
+
+    trimSpace = function(currentVal, id){
+      console.log(currentVal);
+      document.getElementById(id).value = currentVal.trim();
+    };
   </script>
 </body>
 </html>

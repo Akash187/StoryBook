@@ -14,7 +14,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
-//console.log(path.join(__dirname + '/../views/partials/'));
+//Setting up Database
+const {mongoose} = require('./db/mongoose');
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -31,6 +32,7 @@ app.set('views', path.join(__dirname, "../views"));
 
 // Routes
 app.use('/', require('./../routes/index.js'));
+app.use('/stories', require('./../routes/stories.js'));
 app.use('/users', require('./../routes/users.js'));
 
 

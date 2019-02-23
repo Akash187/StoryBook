@@ -1,18 +1,17 @@
-{{> alertMessage}}
 <div class="container">
   <div class="row">
     <div class="col s12 m8">
       <h4 class="article-title">
-        The three greatest things you learn from traveling
-        <a href="/edit/2324343dfdf3243">
+        {{storyTitle}}
+        <a href="/stories/edit/{{_id}}">
           <i class="material-icons blue-text small edit-icon tooltipped" data-position="top"  data-tooltip="Edit">create</i>
         </a>
       </h4>
       <div class="card">
         <div class="card-content">
-          <span class="card-title green-text">February 19th 2019</span>
+          <span class="card-title green-text">{{createdAt}}</span>
           <div class="show-detail">
-            {{{detail}}}
+            {{{content}}}
           </div>
         </div>
       </div>
@@ -46,30 +45,32 @@
       <div class="card">
         <div class="card-content">
           <span class="card-title">Comments</span>
-          <form action="/addComment/21343sdfsdfweeew" method="post" encType="text/plain">
+          <form action="addComment/{{_id}}" method="post" encType="application/x-www-form-urlencoded">
             <div class="input-field">
-              <input id="comment" type="text" class="validate" pattern="[\w|\W]{3,}" title="Comment must be atleast 3 character long." required>
+              <input id="comment" type="text" name="comment" class="validate" onchange="trimSpace(this.value, this.id)" required>
               <label for="comment">Add Comment</label>
             </div>
-            <button class="waves-effect waves-light btn">submit</button>
+            <button type="submit" class="waves-effect waves-light btn">submit</button>
           </form>
         </div>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col s12 m8">
-      <div class="card">
-        <div class="card-content">
-          <h5>The younger brother grew worried and went in search of his elder brother.</h5>
-          <div class="chip truncate blue-text">
-            <img src="/images/default_user_img.png" alt="Contact Person">
-            Akash Kumar Seth
+    {{#each comments}}
+      <div class="col s12 m8">
+        <div class="card">
+          <div class="card-content">
+            <h5>{{this.body}}</h5>
+            <div class="chip truncate blue-text">
+              <img src="/images/default_user_img.png" alt="Contact Person">
+              Akash Kumar Seth
+            </div>
+            <p>Posted : <span>{{this.date}}</span></p>
           </div>
-          <p>Posted : <span>February 19th 2017</span></p>
         </div>
       </div>
-    </div>
+    {{/each}}
   </div>
 </div>
 

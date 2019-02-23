@@ -1,22 +1,23 @@
+{{> alertMessage}}
 <div class="container">
   <div class="row">
-    <h3>Add Story</h3>
-    <form action="/add" method="post" onsubmit="addDetail()" encType="application/x-www-form-urlencoded">
+    <h3><span style="text-transform: capitalize">{{action}}</span> Story</h3>
+    <form action="/stories/{{action}}/{{_id}}" method="post" onsubmit="addDetail()" encType="application/x-www-form-urlencoded">
       <div class="input-field col s12">
-        <input id="title" type="text" name="title" class="validate" pattern="[\w|\W]{5,}" title="Title must be atleast 5 character long." required>
+        <input id="title" type="text" name="storyTitle" value="{{storyTitle}}" onchange="trimSpace(this.value, this.id)" class="validate" pattern="[\w|\W]{3,}" title="Title must be atleast 3 character long." required>
         <label for="title">Title</label>
       </div>
       <div class="input-field col s12">
         <select name="status">
-          <option value="public" selected>Public</option>
-          <option value="private">Private</option>
+          <option value="public">Public</option>
+          <option value="private" {{status}}>Private</option>
         </select>
         <label>Status</label>
       </div>
       <div class="col s12">
         <p>
           <label>
-            <input type="checkbox" checked="checked" name="comment"/>
+            <input type="checkbox" {{allowComment}} name="allowComment"/>
             <span>Allow Comment</span>
           </label>
         </p>
@@ -29,7 +30,7 @@
       </div>
       <div class="col s12">
         <textarea id="editor">
-          {{{ detail }}}
+          {{{ content }}}
         </textarea>
       </div>
       <div class="col s12" style="margin-top: 1rem">
@@ -77,6 +78,5 @@
     document.getElementById('story-detail').value = editor.getData();
     let detail = document.getElementById('story-detail').value;
     console.log(detail.length);
-    return false;
   }
 </script>
