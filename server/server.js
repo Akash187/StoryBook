@@ -30,6 +30,7 @@ app.engine('hbs', handlebars.engine);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, "../views"));
 
+app.use(express.csrf());
 // Routes
 app.use('/', require('./../routes/index.js'));
 app.use('/stories', require('./../routes/stories.js'));
