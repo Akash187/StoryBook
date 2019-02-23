@@ -90,7 +90,15 @@ router.post('/read/addComment/:id', (req, res) => {
 });
 
 //Get Add Page
-router.get('/add', (req, res) => res.render('addEdit', {title: 'Add Story', action: 'add', allowComment : "checked"}));
+router.get('/add', (req, res) => res.render('addEdit',
+    {
+      title: 'Add Story',
+      action: 'add',
+      allowComment : "checked",
+      upload_url: process.env.CKEDITOR5_UPLOAD_URL,
+      token_url: process.env.CKEDITOR5_TOKEN_URL,
+    }
+  ));
 
 //Add Story
 router.post('/add', (req, res) => {
@@ -172,6 +180,8 @@ router.post('/edit/:id', (req, res) => {
       {
         title: 'Add Story',
         action: 'edit',
+        upload_url: process.env.CKEDITOR5_UPLOAD_URL,
+        token_url: process.env.CKEDITOR5_TOKEN_URL,
         _id: id,
         msg: 'Content must be more than 5 characters.' ,
         storyTitle,
