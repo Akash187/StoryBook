@@ -4,7 +4,7 @@ const router = express.Router();
 const {Story} = require('../server/models/story');
 
 // Welcome Page
-router.get('/', (req, res) => res.redirect('/dashboard'));
+router.get('/', (req, res) => res.redirect('/stories'));
 
 //About Page
 router.get('/about', (req, res) => res.render('about', {title: 'About'}));

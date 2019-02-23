@@ -6,7 +6,7 @@ const moment = require('moment');
 const {Story} = require('../server/models/story');
 
 // Welcome Page
-router.get('/', (req, res) => {
+router.get('/public', (req, res) => {
   Story.find({status: 'public'})
     .sort( { createdAt: -1 })
     .then((stories) => {
