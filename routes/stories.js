@@ -106,6 +106,8 @@ router.post('/add', (req, res) => {
       {
         title: 'Add Story',
         action: 'add',
+        upload_url: process.env.CKEDITOR5_UPLOAD_URL,
+        token_url: process.env.CKEDITOR5_TOKEN_URL,
         msg: 'Content must be more than 5 characters.' ,
         storyTitle,
         content,
@@ -141,6 +143,8 @@ router.get('/edit/:id', (req, res) => {
         {
           title: 'Edit Story',
           action: 'edit',
+          upload_url: process.env.CKEDITOR5_UPLOAD_URL,
+          token_url: process.env.CKEDITOR5_TOKEN_URL,
           storyTitle: story[0].storyTitle,
           content: story[0].content,
           _id: story[0]._id,
