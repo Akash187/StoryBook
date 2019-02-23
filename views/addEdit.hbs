@@ -51,8 +51,8 @@
   ClassicEditor
       .create( document.querySelector( '#editor' ),{
         cloudServices: {
-          uploadUrl: 'https://37584.cke-cs.com/easyimage/upload/',
-          tokenUrl: 'https://37584.cke-cs.com/token/dev/OXvcaHoBkg1aBtEbfbf14lcI91tkI4WC0TkRZ4pVDZIAP6hfKFbR5bs07hms'
+          uploadUrl: process.env.CKEDITOR5_UPLOADURL,
+          tokenUrl: process.env.CKEDITOR5_TOKENURL
         },
         toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'insertTable', 'undo', 'redo'],
         image: {
