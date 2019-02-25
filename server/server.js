@@ -1,18 +1,38 @@
 const express = require('express');
 const path = require('path');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv =  require('dotenv');
+const session = require('express-session');
+const passport = require('passport');
 // const cors = require('cors');
 dotenv.config();
 
+//Initialize express
 const app = express();
+
+//Passport config
+require('../config/passport')(passport);
+
+//Setup Port
 const port = process.env.PORT || 3000;
 
 // app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(morgan('dev'));
+
+//Express Session
+app.use(session({
+  secret: process.env.EXPRESS_SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true
+}));
+
+//Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(morgan('dev'));
 
 //Setting up Database
 const {mongoose} = require('./db/mongoose');

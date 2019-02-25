@@ -1,10 +1,9 @@
 <script>
-
   let message = "{{msg}}";
   if(message){
-    let toastHTML = `<span>${message}</span><button onclick="dismissToast()" class="btn-flat toast-action">X</button>`;
+    let toastHTML = `<span class="{{msgColor}}"><b>${message}</b></span><button onclick="dismissToast()" class="btn-flat toast-action">X</button>`;
     document.addEventListener('DOMContentLoaded', function() {
-      M.toast({html: toastHTML});
+      M.toast({html: toastHTML, displayLength: 300000});
     });
   }
 

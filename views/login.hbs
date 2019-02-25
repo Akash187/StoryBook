@@ -4,8 +4,8 @@
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
-            <li class="tab col s6 hoverable"><a class="active" href="#login">Login</a></li>
-            <li class="tab col s6 hoverable"><a href="#signup">Sign Up</a></li>
+            <li class="tab col s6 hoverable"><a class="{{loginActive}}" href="#login">Login</a></li>
+            <li class="tab col s6 hoverable"><a class="{{signupActive}}" href="#signup">Sign Up</a></li>
           </ul>
         </div>
         <div class="container">
@@ -20,43 +20,45 @@
               <h5 class="center col s2 divider-text">or</h5>
               <div class="col s5"><div class="divider"></div></div>
             </div>
-            <div id="login-form">
+            <form action="/users/login" method="post" onsubmit="addDetail()" encType="application/x-www-form-urlencoded">
+              <div id="login-form">
               <div class="input-field col s12">
-                <input id="login-email" type="email" class="validate">
+                <input id="login-email" name="email" type="email" class="validate">
                 <label for="login-email">Email</label>
               </div>
               <div class="input-field col s12">
-                <input id="login-password" type="password" class="validate">
+                <input id="login-password" name="password" type="password" class="validate">
                 <label for="login-password">Password</label>
               </div>
-            </div>
-            <button class="waves-effect waves-light blue btn col s12 login-btn">Sign In</button>
+              </div>
+              <button type="submit" class="waves-effect waves-light blue btn col s12 login-btn">Sign In</button>
+            </form>
           </div>
         </div>
         <div class="container">
           <div id="signup" class="col s12">
             <h4 class="center login-form-title">Create your account</h4>
-            <form action="/register" method="post" encType="multipart/form-data">
+            <form action="register" method="post" encType="multipart/form-data">
               <div class="signup-img">
                 <img id="profile-img" src="/images/user.png">
                 <i onclick="selectImage()" class="medium material-icons">add_circle</i>
-                  <input type="file" id="myFileInput" name="myImage"/>
+                  <input type="file" id="myFileInput" name="myImage" value="/images/user.png"/>
               </div>
               <div id="register-form">
                 <div class="input-field col s12">
-                  <input id="name" type="text" name="name" class="validate" pattern="[A-Za-z]{3,}" title="Minimum three letter name." required>
+                  <input id="name" type="text" name="name" value="{{ name }}" class="validate" pattern="[A-Za-z]{3,}" title="Minimum three letter name." required>
                   <label for="name">Name</label>
                 </div>
                 <div class="input-field col s12">
-                  <input id="email" type="email" name="email" class="validate" required>
+                  <input id="email" type="email" name="email" value="{{ signupEmail }}" class="validate" required>
                   <label for="email">Email</label>
                 </div>
                 <div class="input-field col s12">
-                  <input id="password" type="password" name="password" class="validate" pattern="[\w|\W]{6,}" title="Password must be 6 character long." required>
+                  <input id="password" type="password" name="password" value="{{ signupPassword }}" class="validate">
                   <label for="password">Password</label>
                 </div>
                 <div class="input-field col s12">
-                  <input id="confirm_password" class="validate" type="password" required>
+                  <input id="confirm_password" type="password" value="{{ signupPassword }}" class="validate" required>
                   <label for="confirm_password">Confirm Password</label>
                 </div>
               </div>

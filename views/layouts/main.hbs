@@ -40,7 +40,9 @@
   <main class="section">
     {{{ body }}}
   </main>
-  {{!--partials to disable button if offline.--}}
+  {{!--partial to show alert Message--}}
+  {{> alertMessage}}
+  {{!--partial to disable button if offline.--}}
   {{> offlineAlert}}
 
   {{!--floating Button to add article--}}
