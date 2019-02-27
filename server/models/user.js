@@ -15,6 +15,11 @@ let UserSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
+  backgroundImg:{
+    type: String,
+    trim: true,
+    required: true
+  },
   email: {
     type: String,
     required: true,
@@ -28,7 +33,6 @@ let UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    require: true,
     minlength: 6
   },
   strategy: {
@@ -41,13 +45,6 @@ let UserSchema = new mongoose.Schema({
     default: Date.now()
   }
 });
-
-UserSchema.methods.toJSON = function(){
-  let user = this;
-  let userObject = user.toObject();
-  let {_id, name, email} = {...userObject};
-  return {_id, name, email};
-};
 
 //Mongoose Middleware
 UserSchema.pre('save', function (next) {

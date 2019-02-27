@@ -11,10 +11,10 @@
         <div class="container">
           <div id="login" class="col s12">
             <h4 class="center login-form-title">Sign in to your account</h4>
-            <button id="google-signIn-btn" class="waves-effect waves-light red btn col s12">
+            <a href="/users/google" id="google-signIn-btn" class="waves-effect waves-light red btn col s12">
               <img src="/images/google_logo.png">
               <span>Login with Google</span>
-            </button>
+            </a>
             <div>
               <div class="col s5"><div class="divider"></div></div>
               <h5 class="center col s2 divider-text">or</h5>
@@ -23,11 +23,11 @@
             <form action="/users/login" method="post" onsubmit="addDetail()" encType="application/x-www-form-urlencoded">
               <div id="login-form">
               <div class="input-field col s12">
-                <input id="login-email" name="email" type="email" class="validate">
+                <input id="login-email" value="{{email}}" name="email" type="email" class="validate">
                 <label for="login-email">Email</label>
               </div>
               <div class="input-field col s12">
-                <input id="login-password" name="password" type="password" class="validate">
+                <input id="login-password" value="{{password}}" name="password" type="password" class="validate">
                 <label for="login-password">Password</label>
               </div>
               </div>
@@ -46,7 +46,7 @@
               </div>
               <div id="register-form">
                 <div class="input-field col s12">
-                  <input id="name" type="text" name="name" value="{{ name }}" class="validate" pattern="[A-Za-z]{3,}" title="Minimum three letter name." required>
+                  <input id="name" type="text" name="name" value="{{ name }}" class="validate" pattern="[A-Za-z0-9_ ]{3,}" title="Minimum three letter name." onchange="trimSpace(this.value, this.id)" required>
                   <label for="name">Name</label>
                 </div>
                 <div class="input-field col s12">
@@ -54,7 +54,7 @@
                   <label for="email">Email</label>
                 </div>
                 <div class="input-field col s12">
-                  <input id="password" type="password" name="password" value="{{ signupPassword }}" class="validate">
+                  <input id="password" type="password" name="password" value="{{ signupPassword }}" class="validate" pattern="/^[a-zA-Z0-9~!@#$%^&*]{6,}$/" title="Password must be atleast 6 characters. Should contain letters, number or special characters." required>
                   <label for="password">Password</label>
                 </div>
                 <div class="input-field col s12">

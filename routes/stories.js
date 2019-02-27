@@ -98,7 +98,8 @@ router.get('/add', (req, res) => res.render('addEdit',
       upload_url: process.env.CKEDITOR5_UPLOAD_URL,
       token_url: process.env.CKEDITOR5_TOKEN_URL,
     }
-  ));
+  )
+);
 
 //Add Story
 router.post('/add', (req, res) => {

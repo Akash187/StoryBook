@@ -5,8 +5,10 @@ const bodyParser = require('body-parser');
 const dotenv =  require('dotenv');
 const session = require('express-session');
 const passport = require('passport');
-// const cors = require('cors');
 dotenv.config();
+
+//Setting up Database
+const {mongoose} = require('./db/mongoose');
 
 //Initialize express
 const app = express();
@@ -32,10 +34,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(morgan('dev'));
+//Flash Message
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res)();
+  next();
+});
 
-//Setting up Database
-const {mongoose} = require('./db/mongoose');
+app.use(morgan('dev'));
 
 app.use(express.static(path.join(__dirname, '../public')));
 

@@ -192,4 +192,12 @@ figcaption{
     cursor: pointer;
 }
 
+/*flash Message*/
+#messages .error{
+    color: red;
+}
+
+ul.green-text{
+    margin: 0;
+}
 

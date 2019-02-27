@@ -19,21 +19,46 @@
     <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper  purple darken-2">
-          <a href="/" class="heading" style="font-size: 5vh; margin-left: 1vw">StoryBooks</a>
+          <a href="/" class="heading" style="font-size: 5vh; margin-left: 1vw">StoryBook</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons hide-on-med-and-up">menu</i></a>
           <ul class="right hide-on-small-and-down">
             <li><a href="/">Public Stories</a></li>
             <li><a href="/users/login">Login</a></li>
             <li><a href="/about">About</a></li>
+            <li><a href="/users/logout">Logout</a></li>
+            <!-- Dropdown Trigger -->
+            <li>
+              <a class='dropdown-trigger' href='#' data-target='dropdown1'>
+                <i class="material-icons white-text small">more_vert</i>
+              </a>
+            </li>
+          </ul>
+          <!-- Dropdown Structure -->
+          <ul id='dropdown1' class='dropdown-content'>
+            <li><a href="#!">one</a></li>
+            <li><a href="#!">two</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="#!">three</a></li>
+            <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+            <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
           </ul>
         </div>
       </nav>
     </div>
 
     <ul class="sidenav" id="mobile-demo">
+      <li><div class="user-view">
+        <div class="background">
+          <img src="https://res.cloudinary.com/akash187/image/upload/v1551132121/pexels-photo-775687.jpg">
+        </div>
+        <a href="#user"><img class="circle" src="https://res.cloudinary.com/akash187/image/upload/v1551133778/pexels-photo-1082962.jpg"></a>
+        <a href="#"><span class="white-text name">John Doe</span></a>
+        <a href="#"><span class="white-text email">jdandturk@gmail.com</span></a>
+      </div></li>
       <li><a href="/">Public Stories</a></li>
       <li><a href="/users/login">Login</a></li>
       <li><a href="/about">About</a></li>
+      <li><a href="/users/logout">Logout</a></li>
     </ul>
   </header>
 
@@ -42,6 +67,8 @@
   </main>
   {{!--partial to show alert Message--}}
   {{> alertMessage}}
+  {{!--partial to show flash Message--}}
+  {{> flashMessage}}
   {{!--partial to disable button if offline.--}}
   {{> offlineAlert}}
 
@@ -75,8 +102,10 @@
   <script type="text/javascript" src="/materialize/js/materialize.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      let elems = document.querySelectorAll('.sidenav');
-      let instances = M.Sidenav.init(elems);
+      let elem1 = document.querySelectorAll('.sidenav');
+      let elem2 = document.querySelectorAll('.dropdown-trigger');
+      let instance1 = M.Sidenav.init(elem1);
+      let instance2 = M.Dropdown.init(elem2, {alignment : 'right', coverTrigger: false});
     });
 
     trimSpace = function(currentVal, id){

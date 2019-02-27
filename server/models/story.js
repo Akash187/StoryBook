@@ -27,6 +27,10 @@ let Story = mongoose.model('Story', {
     type: Boolean,
     required: true
   },
+  _creator: {
+    required: true,
+    type: mongoose.Schema.Types.ObjectId
+  },
   comments: [
     {
       body: {

@@ -1,0 +1,15 @@
+<script>
+  message = `{{{messages}}}`;
+  if(message){
+    let toastHTML = `<b>${message}</b><button onclick="dismissToast()" class="btn-flat toast-action">X</button>`;
+    document.addEventListener('DOMContentLoaded', function() {
+      M.toast({html: toastHTML, displayLength: 3000});
+    });
+  }
+
+  function dismissToast(){
+    let toastElement = document.querySelector('.toast');
+    let toastInstance = M.Toast.getInstance(toastElement);
+    toastInstance.dismiss();
+  }
+</script>
