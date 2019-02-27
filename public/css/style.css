@@ -8,6 +8,7 @@ main{
 
 td.truncate{
     max-width: 25rem;
+    margin-top: 6px;
 }
 
 .btn-floating{
@@ -197,7 +198,50 @@ figcaption{
     color: red;
 }
 
+/*removing margin from flash message*/
 ul.green-text{
     margin: 0;
+}
+
+ul.white-text{
+    margin: 0;
+}
+
+ul.red-text{
+    margin: 0;
+}
+
+.dropdown-content .user-view {
+    padding: 16px 16px 0;
+}
+.dropdown-content .user-view {
+    position: relative;
+    padding: 32px;
+}
+
+.dropdown-content .user-view .background {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.dropdown-content .user-view .background img{
+    min-width: 300px;
+    min-height: 160px;
+    object-fit: cover;
+}
+
+.dropdown-content .user-view .circle {
+    height: 64px;
+    width: 64px;
+}
+
+a.edit-floating-btn{
+    position: absolute;
+    top: -16px;
 }
 

@@ -49,7 +49,21 @@ let handlebars = require('express-handlebars').create({
   layoutsDir: path.join(__dirname, "../views/layouts"),
   partialsDir: path.join(__dirname, "../views/partials"),
   defaultLayout: 'main',
-  extname: 'hbs'
+  extname: 'hbs',
+  helpers: {
+    auth: function(userId, creatorId, options) {
+      if (arguments.length < 3)
+        throw new Error("Handlebars Helper equal needs 2 parameters");
+      if(!userId){
+        return options.inverse(this);
+      }
+      if (userId.toString() !== creatorId.toString()) {
+        return options.inverse(this);
+      } else {
+        return options.fn(this);
+      }
+    }
+  }
 });
 
 app.engine('hbs', handlebars.engine);

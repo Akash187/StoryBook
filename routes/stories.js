@@ -2,30 +2,96 @@ const express = require('express');
 const router = express.Router();
 const sanitizeHtml = require("sanitize-html");
 const moment = require('moment');
+const {ensureAuthenticated} = require('../config/auth');
 
 const {Story} = require('../server/models/story');
+const {User} = require('../server/models/user');
 
 // Welcome Page
-router.get('/', (req, res) => {
-  Story.find({status: 'public'})
+router.get('/', async (req, res) => {
+  try {
+    let stories = await Story.find({status: 'public'}).sort({createdAt: -1});
+    let pArray = stories.map(async (story) => {
+      let user = await User.findOne({_id: story._creator});
+      return {
+        createdAt: moment.unix(story.createdAt).format("MMMM Do YYYY"),
+        _id: story._id,
+        storyTitle: story.storyTitle,
+        _creator: story._creator,
+        creator: user.name,
+        profileImg: user.profileImg
+      }
+    });
+    console.log("User : ", req.user);
+    const publicStories = await Promise.all(pArray);
+    res.render('home', {title: 'Stories', pageTitle: 'Public Stories', stories: publicStories, user: req.user});
+
+
+    //Synchronous way of getting public Stories
+    // let publicStories = [];
+    // for(let story of stories){
+    //   let user = await User.findOne({_id: story._creator});
+    //   publicStories.push({
+    //     createdAt: moment.unix(story.createdAt).format("MMMM Do YYYY"),
+    //     _id: story._id,
+    //     storyTitle: story.storyTitle,
+    //     creator: user.name,
+    //     profileImg: user.profileImg
+    //   });
+    // }
+    // console.log("publicStories : ", publicStories);
+  }catch(e){
+    console.log(e);
+    res.status(400).send(e);
+  }
+});
+
+//Get Dashboard Page
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+  Story.find({_creator: req.user._id})
     .sort( { createdAt: -1 })
     .then((stories) => {
-      const publicStories= stories.map(story =>
+      let myStories = stories.map(story =>
         (
-          {createdAt: moment.unix(story.createdAt).format("MMMM Do YYYY"),
+          {
+            createdAt: moment.unix(story.createdAt).format("MMMM Do YYYY"),
             _id: story._id,
             storyTitle: story.storyTitle,
-            creator: 'Akash Kumar Seth',
-            profileImg: 'https://res.cloudinary.com/akash187/image/upload/v1550547135/uploads/hy3kol8bywgruopkbkih.jpg'})
+            status: story.status
+          }
+        )
       );
-      res.render('home', {title: 'Stories', pageTitle: 'Public Stories', stories: publicStories});
+      console.log("My Stories : ", myStories);
+      res.render('dashboard', {title: 'Dashboard', user: req.user, stories: myStories});
     }, (e) => {
       res.status(400).send(e);
     });
 });
 
-//Get Dashboard Page
-router.get('/dashboard', (req, res) => res.render('dashboard', {title: 'Dashboard Page'}));
+// more public story of other user
+router.get('/user/:id', (req, res) => {
+  Story.find({_creator: req.param.id, status: 'public'})
+    .sort( { createdAt: -1 })
+    .then((stories) => {
+      const publicStories = stories.map(story =>{
+        let userName, profileImg;
+        User.findOne({_id: story._creator}).then((user) => {
+          userName = user.name;
+          profileImg = user.profileImg;
+        }).catch((e) => console.log("Unable to fetch User : ", e));
+        return {
+          createdAt: moment.unix(story.createdAt).format("MMMM Do YYYY"),
+          _id: story._id,
+          storyTitle: story.storyTitle,
+          userName,
+          profileImg
+        }
+      });
+      res.render('home', {title: 'Stories', pageTitle: 'Stories', stories: publicStories});
+    }, (e) => {
+      res.status(400).send(e);
+    });
+});
 
 //Get Read Page
 router.get('/read/:id', (req, res) => {
@@ -57,6 +123,7 @@ router.get('/read/:id', (req, res) => {
       });
       res.render('read',
         {
+          user: req.user,
           title: 'Read',
           _id: story[0]._id,
           storyTitle: story[0].storyTitle,
@@ -90,19 +157,19 @@ router.post('/read/addComment/:id', (req, res) => {
 });
 
 //Get Add Page
-router.get('/add', (req, res) => res.render('addEdit',
+router.get('/add', ensureAuthenticated, (req, res) => res.render('addEdit',
     {
       title: 'Add Story',
       action: 'add',
       allowComment : "checked",
       upload_url: process.env.CKEDITOR5_UPLOAD_URL,
-      token_url: process.env.CKEDITOR5_TOKEN_URL,
+      token_url: process.env.CKEDITOR5_TOKEN_URL
     }
   )
 );
 
 //Add Story
-router.post('/add', (req, res) => {
+router.post('/add', ensureAuthenticated, (req, res) => {
   console.log(req.body);
   let {storyTitle, status, allowComment, content} = {...req.body};
   if(typeof req.body.content === "string"){
@@ -130,10 +197,12 @@ router.post('/add', (req, res) => {
       content: content,
       createdAt: moment().unix(),
       status,
+      _creator: req.user._id,
       allowComment: allowComment === "on"
     });
     story.save().then((doc) => {
-      res.redirect('/');
+      req.flash("green-text", "Story added Successfully!");
+      res.redirect('/stories');
     }, (e) => {
       console.log(e);
       res.status(400);

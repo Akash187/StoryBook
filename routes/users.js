@@ -4,7 +4,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary');
 const cloudinaryStorage = require("multer-storage-cloudinary");
 const passport = require('passport');
-const mongoose = require('mongoose');
+const {ensureAuthenticated} = require('../config/auth');
 
 const { User } = require('../server/models/user');
 
@@ -158,9 +158,10 @@ router.get('/google/redirect', (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', ensureAuthenticated, (req, res) => {
   req.logout();
-  res.redirect('/');
+  req.flash("green-text", "You are Logged out!");
+  res.redirect('/stories');
 });
 
 module.exports = router;

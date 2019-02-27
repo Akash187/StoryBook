@@ -3,9 +3,11 @@
     <div class="col s12 m8">
       <h4 class="article-title">
         {{storyTitle}}
-        <a href="/stories/edit/{{_id}}">
-          <i class="material-icons blue-text small edit-icon tooltipped" data-position="top"  data-tooltip="Edit">create</i>
-        </a>
+        {{#auth user._id this._creator}}
+          <a href="/stories/edit/{{_id}}">
+            <i class="material-icons blue-text small edit-icon tooltipped" data-position="top"  data-tooltip="Edit">create</i>
+          </a>
+        {{/auth}}
       </h4>
       <div class="card">
         <div class="card-content">
@@ -19,13 +21,13 @@
     <div class="col s12 m4">
       <div class="card">
         <div class="card-content">
-          <span class="card-title center truncate blue-text">John Duo Akash Kumar Seth</span>
+          <span class="card-title center truncate blue-text">{{user.name}}</span>
           <div class="profile-img">
-            <img src="https://res.cloudinary.com/akash187/image/upload/v1551138396/uploads/s8qtqgdxhje8hfmrzwlt.jpg">
+            <img src="{{user.profileImg}}">
           </div>
         </div>
         <div class="card-action center">
-          <a class="truncate" href="#">More From Akash Kumar Seth</a>
+          <a class="truncate" href="/stories/user/{{_creator}}">More From {{user.name}}</a>
         </div>
       </div>
     </div>

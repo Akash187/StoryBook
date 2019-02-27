@@ -22,43 +22,59 @@
           <a href="/" class="heading" style="font-size: 5vh; margin-left: 1vw">StoryBook</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons hide-on-med-and-up">menu</i></a>
           <ul class="right hide-on-small-and-down">
-            <li><a href="/">Public Stories</a></li>
-            <li><a href="/users/login">Login</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/users/logout">Logout</a></li>
+          {{#if user}}
+            <li><a href="/stories/dashboard">Dashboard</a></li>
+            <li><a href="/stories/user/{{user._id}}">My Stories</a></li>
             <!-- Dropdown Trigger -->
             <li>
-              <a class='dropdown-trigger' href='#' data-target='dropdown1'>
+              <a class='dropdown-trigger2' href='#' data-target='dropdown2'>
                 <i class="material-icons white-text small">more_vert</i>
               </a>
             </li>
+          {{else}}
+            <li><a href="/">Public Stories</a></li>
+            <li><a href="/users/login">Login</a></li>
+            <li><a href="/about">About</a></li>
+          {{/if}}
           </ul>
           <!-- Dropdown Structure -->
-          <ul id='dropdown1' class='dropdown-content'>
-            <li><a href="#!">one</a></li>
-            <li><a href="#!">two</a></li>
-            <li class="divider" tabindex="-1"></li>
-            <li><a href="#!">three</a></li>
-            <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-            <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+          <ul id='dropdown2' class='dropdown-content'>
+            <li><div class="user-view">
+              <div class="background">
+                <img src="{{user.backgroundImg}}">
+              </div>
+              <div>
+                <img class="circle" src="{{user.profileImg}}">
+                <div style="max-width: 160px">
+                  <div class="white-text truncate name">{{user.name}}</div>
+                  <div class="white-text truncate email">{{user.email}}</div>
+                </div>
+              </div>
+            </div></li>
+            <li><a href="/users/logout">Logout</a></li>
           </ul>
         </div>
       </nav>
     </div>
 
     <ul class="sidenav" id="mobile-demo">
-      <li><div class="user-view">
-        <div class="background">
-          <img src="https://res.cloudinary.com/akash187/image/upload/v1551132121/pexels-photo-775687.jpg">
-        </div>
-        <a href="#user"><img class="circle" src="https://res.cloudinary.com/akash187/image/upload/v1551133778/pexels-photo-1082962.jpg"></a>
-        <a href="#"><span class="white-text name">John Doe</span></a>
-        <a href="#"><span class="white-text email">jdandturk@gmail.com</span></a>
-      </div></li>
-      <li><a href="/">Public Stories</a></li>
-      <li><a href="/users/login">Login</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/users/logout">Logout</a></li>
+      {{#if user}}
+        <li><div class="user-view">
+          <div class="background">
+            <img src="{{user.backgroundImg}}">
+          </div>
+          <a href="#user"><img class="circle" src="{{user.profileImg}}"></a>
+          <a href="#"><span class="white-text name">{{usern.name}}</span></a>
+          <a href="#"><span class="white-text email">{{user.email}}</span></a>
+        </div></li>
+        <li><a href="/stories/dashboard">Dashboard</a></li>
+        <li><a href="/stories/user/{{user._id}}">My Stories</a></li>
+        <li><a href="/users/logout">Logout</a></li>
+      {{else}}
+        <li><a href="/">Public Stories</a></li>
+        <li><a href="/users/login">Login</a></li>
+        <li><a href="/about">About</a></li>
+      {{/if}}
     </ul>
   </header>
 
@@ -73,7 +89,9 @@
   {{> offlineAlert}}
 
   {{!--floating Button to add article--}}
-  <a class="btn-floating btn-large waves-effect waves-light orange accent-4" href="/stories/add"><i class="material-icons">add</i></a>
+  {{#if user}}
+    <a class="btn-floating btn-large waves-effect waves-light orange accent-4" href="/stories/add"><i class="material-icons">add</i></a>
+  {{/if}}
 
   {{!--footer--}}
   <footer class="page-footer purple darken-2">
@@ -103,9 +121,9 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       let elem1 = document.querySelectorAll('.sidenav');
-      let elem2 = document.querySelectorAll('.dropdown-trigger');
+      let elem2 = document.querySelectorAll('.dropdown-trigger2');
       let instance1 = M.Sidenav.init(elem1);
-      let instance2 = M.Dropdown.init(elem2, {alignment : 'right', coverTrigger: false});
+      let instance2 = M.Dropdown.init(elem2, {constrainWidth: false, coverTrigger: false});
     });
 
     trimSpace = function(currentVal, id){
