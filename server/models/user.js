@@ -46,6 +46,8 @@ let UserSchema = new mongoose.Schema({
   }
 });
 
+
+
 //Mongoose Middleware
 UserSchema.pre('save', function (next) {
   let user = this;

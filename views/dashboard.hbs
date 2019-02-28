@@ -25,7 +25,7 @@
                 <a href="/stories/edit/{{this._id}}">
                   <i class="small material-icons grey-text edit-icon tooltipped" data-position="top"  data-tooltip="Edit">create</i>
                 </a>
-                <a href="/stories/delete/{{this._id}}">
+                <a id="{{this._id}}" onclick="deleteIdea(this)">
                   <i class="small material-icons red-text edit-icon tooltipped" data-position="top"  data-tooltip="Delete">delete</i>
                 </a>
               </td>
@@ -47,4 +47,15 @@
     let elem = document.querySelectorAll('.tooltipped');
     let instances = M.Tooltip.init(elem);
   });
+
+  function deleteIdea(elm) {
+    fetch("https://storybook101.herokuapp.com/stories/delete/" + elm.id, {
+      method: 'delete'
+    })
+    .then(response => response.json())
+    .then((data) => {
+      location.reload();
+    })
+    .catch(e => showAlert('alert-warning', 'Problem deleting the Idea.'));
+  }
 </script>

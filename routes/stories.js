@@ -67,15 +67,15 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 });
 
 //Delete Story
-router.get('/delete/:id', ensureAuthenticated, async (req, res) => {
-  let id = req.param.id;
+router.delete('/delete/:id', ensureAuthenticated, async (req, res) => {
+  let id = req.params.id;
   try{
-    let deletedStory = await Story.findOneAndRemove({_id: id, _creator: req.user._id});
+    let deletedStory = await Story.findOneAndDelete({_id: id, _creator: req.user._id});
+    console.log(deletedStory);
     if (!deletedStory) {
       return res.status(404).send();
     }
-    req.flash("green-text", "Story Deleted!");
-    res.redirect('/stories/dashboard');
+    res.send({deletedStory});
   }catch(e){
     res.status(400).send(e);
   }
