@@ -22,7 +22,6 @@ router.get('/', async (req, res) => {
         profileImg: user.profileImg
       }
     });
-    console.log("User : ", req.user);
     const publicStories = await Promise.all(pArray);
     res.render('home', {title: 'Stories', pageTitle: 'Public Stories', stories: publicStories, user: req.user});
 
@@ -61,90 +60,126 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
           }
         )
       );
-      console.log("My Stories : ", myStories);
       res.render('dashboard', {title: 'Dashboard', user: req.user, stories: myStories});
     }, (e) => {
       res.status(400).send(e);
     });
 });
 
-// more public story of other user
-router.get('/user/:id', (req, res) => {
-  Story.find({_creator: req.param.id, status: 'public'})
-    .sort( { createdAt: -1 })
-    .then((stories) => {
-      const publicStories = stories.map(story =>{
-        let userName, profileImg;
-        User.findOne({_id: story._creator}).then((user) => {
-          userName = user.name;
-          profileImg = user.profileImg;
-        }).catch((e) => console.log("Unable to fetch User : ", e));
-        return {
-          createdAt: moment.unix(story.createdAt).format("MMMM Do YYYY"),
-          _id: story._id,
-          storyTitle: story.storyTitle,
-          userName,
-          profileImg
-        }
-      });
-      res.render('home', {title: 'Stories', pageTitle: 'Stories', stories: publicStories});
-    }, (e) => {
-      res.status(400).send(e);
+// All stories by signed in user
+router.get('/myStories', ensureAuthenticated, async (req, res) => {
+  try {
+    let stories = await Story.find({_creator: req.user._id}).sort({createdAt: -1});
+    let pArray = stories.map(async (story) => {
+      let user = await User.findOne({_id: story._creator});
+      return {
+        createdAt: moment.unix(story.createdAt).format("MMMM Do YYYY"),
+        _id: story._id,
+        storyTitle: story.storyTitle,
+        _creator: story._creator,
+        creator: user.name,
+        profileImg: user.profileImg
+      }
     });
+    const publicStories = await Promise.all(pArray);
+    res.render('home', {title: 'Stories', pageTitle: 'My Stories', stories: publicStories, user: req.user});
+  }catch(e){
+    res.status(400).send(e);
+  }
+});
+
+// more public story of other user
+router.get('/user/:id', async (req, res) => {
+  let id = req.params.id;
+  if(req.user){
+    if(req.user._id.toString() === id.toString()){
+      return res.redirect('/stories/myStories');
+    }
+  }
+  try {
+    let stories = await Story.find({_creator: id, status: 'public'}).sort({createdAt: -1});
+    let pArray = stories.map(async (story) => {
+      let user = await User.findOne({_id: story._creator});
+      return {
+        createdAt: moment.unix(story.createdAt).format("MMMM Do YYYY"),
+        _id: story._id,
+        storyTitle: story.storyTitle,
+        _creator: story._creator,
+        creator: user.name,
+        profileImg: user.profileImg
+      }
+    });
+    const publicStories = await Promise.all(pArray);
+    res.render('home', {title: 'Stories', pageTitle: 'Stories', stories: publicStories, user: req.user});
+  }catch(e){
+    console.log(e);
+    res.status(400).send(e);
+  }
 });
 
 //Get Read Page
-router.get('/read/:id', (req, res) => {
+router.get('/read/:id', async (req, res) => {
+
   let id = req.params.id;
-  Story.find({_id :id})
-    .then((story) => {
-      if (!story) {
-        return res.status(404);
+
+  try{
+    let story = await Story.findOne({_id :id});
+    if (!story) {
+      return res.status(404);
+    }
+    let creator = await User.findOne({_id: story._creator});
+    let clean = sanitizeHtml(story.content, {
+      allowedTags: ['figure','img','h4', 'h5', 'h6', 'p', 'blockquote', 'i', 'strong', 'a', 'li', 'ul', 'ol','table', 'thead', 'tr', 'th', 'td', 'tbody'],
+      allowedAttributes: {
+        'a': [ 'href' ],
+        'img': [ 'src' ],
+        'th': ['colspan', 'rowspan'],
+        'td': ['colspan', 'rowspan'],
+        'figure': ['class']
       }
-      let clean = sanitizeHtml(story[0].content, {
-        allowedTags: ['figure','img','h4', 'h5', 'h6', 'p', 'blockquote', 'i', 'strong', 'a', 'li', 'ul', 'ol','table', 'thead', 'tr', 'th', 'td', 'tbody'],
-        allowedAttributes: {
-          'a': [ 'href' ],
-          'img': [ 'src' ],
-          'th': ['colspan', 'rowspan'],
-          'td': ['colspan', 'rowspan'],
-          'figure': ['class']
-        }
+    });
+    //sorting comment in descending order of date
+    const sortedComment = story.comments.sort(function(a, b){
+      return b.date - a.date
+    });
+    //Array of promises
+    let pArray = sortedComment.map(async comment => {
+      let user = await User.findOne({_id: comment._creator});
+      return {
+        body : comment.body,
+        date : moment.unix(comment.date).format("MMMM Do YYYY"),
+        creator: user.name,
+        profileImg: user.profileImg
+      }
+    });
+
+    let comments = await Promise.all(pArray);
+    res.render('read',
+      {
+        title: 'Read Story',
+        _id: story._id,
+        storyTitle: story.storyTitle,
+        createdAt: moment.unix(story.createdAt).format("dddd, MMMM Do YYYY"),
+        content: clean,
+        allowComment: story.allowComment,
+        comments: comments,
+        creator: creator,
+        user: req.user
       });
-      //sorting comment in descending order of date
-      const sortedComment = story[0].comments.sort(function(a, b){
-        return b.date - a.date
-      });
-      const Comments = sortedComment.map(comment => {
-        return {
-          body : comment.body,
-          date : moment.unix(comment.date).format("MMMM Do YYYY")
-        }
-      });
-      res.render('read',
-        {
-          user: req.user,
-          title: 'Read',
-          _id: story[0]._id,
-          storyTitle: story[0].storyTitle,
-          createdAt: moment.unix(story[0].createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a"),
-          content: clean,
-          allowComment: story[0].allowComment,
-          comments: Comments
-        });
-    }).catch((e) => {
+
+  }catch(e) {
     console.log(e);
-    res.status(400);
-  });
+    res.status(400).send(e);
+  }
 });
 
 //post Comment to Story
-router.post('/read/addComment/:id', (req, res) => {
-  console.log("comment Body", req.body);
+router.post('/read/addComment/:id', ensureAuthenticated, (req, res) => {
   let id = req.params.id;
   let comment = {
     body : req.body.comment,
-    date : moment().unix()
+    date : moment().unix(),
+    _creator: req.user._id
   };
   Story.findOneAndUpdate({_id :id}, { $push: { comments : comment } }, {new: true})
     .then((doc) => {
@@ -163,14 +198,14 @@ router.get('/add', ensureAuthenticated, (req, res) => res.render('addEdit',
       action: 'add',
       allowComment : "checked",
       upload_url: process.env.CKEDITOR5_UPLOAD_URL,
-      token_url: process.env.CKEDITOR5_TOKEN_URL
+      token_url: process.env.CKEDITOR5_TOKEN_URL,
+      user: req.user
     }
   )
 );
 
 //Add Story
 router.post('/add', ensureAuthenticated, (req, res) => {
-  console.log(req.body);
   let {storyTitle, status, allowComment, content} = {...req.body};
   if(typeof req.body.content === "string"){
     content = req.body.content;
@@ -189,7 +224,8 @@ router.post('/add', ensureAuthenticated, (req, res) => {
         storyTitle,
         content,
         status: status === 'private' ? "selected" : "random",
-        allowComment: allowComment === "on" ? "checked" : "random"
+        allowComment: allowComment === "on" ? "checked" : "random",
+        user: req.user
       });
   }else{
     let story = new Story({
@@ -211,9 +247,9 @@ router.post('/add', ensureAuthenticated, (req, res) => {
 });
 
 //Get Edit Page
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   let id = req.params.id;
-  Story.find({_id :id})
+  Story.find({_id :id, _creator: req.user._id})
     .then((story) => {
       if (!story) {
         return res.status(404);
@@ -228,7 +264,8 @@ router.get('/edit/:id', (req, res) => {
           content: story[0].content,
           _id: story[0]._id,
           status: story[0].status === 'private' ? "selected" : "random",
-          allowComment: story[0].allowComment ? "checked" : "random"
+          allowComment: story[0].allowComment ? "checked" : "random",
+          user: req.user
         });
     }).catch((e) => {
       console.log(e);
@@ -237,7 +274,7 @@ router.get('/edit/:id', (req, res) => {
 });
 
 //Update Story
-router.post('/edit/:id', (req, res) => {
+router.post('/edit/:id', ensureAuthenticated, (req, res) => {
   console.log(req.body);
   let id = req.params.id;
   let {storyTitle, status, allowComment, content} = {...req.body};
@@ -259,7 +296,8 @@ router.post('/edit/:id', (req, res) => {
         storyTitle,
         content,
         status: status === 'private' ? "selected" : "random",
-        allowComment: allowComment === "on" ? "checked" : "random"
+        allowComment: allowComment === "on" ? "checked" : "random",
+        user: req.user
       });
   }else{
     let story = {
@@ -269,7 +307,7 @@ router.post('/edit/:id', (req, res) => {
       allowComment: allowComment === "on"
     };
     Story.findOneAndUpdate(
-      {_id :id},
+      {_id :id, _creator: req.user._id},
       {$set: story},
       {new: true})
       .then((doc) => {

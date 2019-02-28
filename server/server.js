@@ -54,7 +54,7 @@ let handlebars = require('express-handlebars').create({
     auth: function(userId, creatorId, options) {
       if (arguments.length < 3)
         throw new Error("Handlebars Helper equal needs 2 parameters");
-      if(!userId){
+      if(!userId || !creatorId){
         return options.inverse(this);
       }
       if (userId.toString() !== creatorId.toString()) {

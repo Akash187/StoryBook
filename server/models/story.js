@@ -40,6 +40,10 @@ let Story = mongoose.model('Story', {
       date: {
         type: Number,
         required: true
+      },
+      _creator: {
+        required: true,
+        type: mongoose.Schema.Types.ObjectId
       }
     }
   ]
