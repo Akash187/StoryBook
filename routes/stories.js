@@ -66,6 +66,21 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
     });
 });
 
+//Delete Story
+router.get('/delete/:id', ensureAuthenticated, async (req, res) => {
+  let id = req.param.id;
+  try{
+    let deletedStory = await Story.findOneAndRemove({_id: id, _creator: req.user._id});
+    if (!deletedStory) {
+      return res.status(404).send();
+    }
+    req.flash("green-text", "Story Deleted!");
+    res.redirect('/stories/dashboard');
+  }catch(e){
+    res.status(400).send(e);
+  }
+});
+
 // All stories by signed in user
 router.get('/myStories', ensureAuthenticated, async (req, res) => {
   try {
@@ -145,6 +160,7 @@ router.get('/read/:id', async (req, res) => {
     //Array of promises
     let pArray = sortedComment.map(async comment => {
       let user = await User.findOne({_id: comment._creator});
+      console.log("User : ", user);
       return {
         body : comment.body,
         date : moment.unix(comment.date).format("MMMM Do YYYY"),

@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const morgan = require('morgan');
+//const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv =  require('dotenv');
 const session = require('express-session');
@@ -41,7 +41,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -75,5 +75,9 @@ app.use('/', require('./../routes/index.js'));
 app.use('/stories', require('./../routes/stories.js'));
 app.use('/users', require('./../routes/users.js'));
 
+//Handle 404 error
+app.get('*', (req, res) => {
+  res.render('404', {layout: false});
+});
 
 app.listen(port, console.log(`Server started on port ${port}`));
