@@ -20,14 +20,14 @@ require('../config/passport')(passport);
 const port = process.env.PORT || 3000;
 
 //Redirect to https protocol from http after google oauth2 in production.
-app.configure('production', () => {
+if(process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https')
       res.redirect(`https://${req.header('host')}${req.url}`);
     else
       next()
   })
-});
+}
 
 // app.use(cors());
 app.use(bodyParser.json());
