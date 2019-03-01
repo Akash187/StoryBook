@@ -91,8 +91,8 @@ router.post('/register', (req, res) => {
       //Try to save as new User
       user.save().then((savedUser) => {
         console.log(savedUser);
-        req.flash("green-text", "Welcome to StoryBook.");
-        res.redirect('/stories/dashboard');
+        req.flash("green-text", "Registration successful. Login to proceed!");
+        res.redirect('login');
         //res.render('login', {title: 'Login Page', msg: "SignUp Successful.", msgColor: "green-text"});
       }).catch((e) => {
         //delete the uploaded image

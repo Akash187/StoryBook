@@ -48,6 +48,8 @@
     let instances = M.Tooltip.init(elem);
   });
 
+  //https://storybook101.herokuapp.com/stories/delete/
+  //http://localhost:3000/stories/delete/
   function deleteIdea(elm) {
     fetch("https://storybook101.herokuapp.com/stories/delete/" + elm.id, {
       method: 'delete'
