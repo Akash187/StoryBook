@@ -254,7 +254,7 @@ router.post('/add', ensureAuthenticated, (req, res) => {
     });
     story.save().then((doc) => {
       req.flash("green-text", "Story added Successfully!");
-      res.redirect('/stories');
+      res.redirect('dashboard');
     }, (e) => {
       console.log(e);
       res.status(400);
