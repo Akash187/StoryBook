@@ -1,6 +1,6 @@
 # StoryBook Project - Node.js
 
-A NodeJs project to post stories from best and worst of your life which you can make private and public.
+A NodeJs project to post stories from best and worst of your life which you can make private and public. Other user can comment on stories.
 
 ## Usage
 If you are in local mode use:
@@ -33,10 +33,13 @@ npm install
 * MongoDB
 * Mongoose
 * Materialize 1.0
+* CKEditor 5
 * Handlebars
 * Bcrypt
 * JWT(JsonWebTokens)
-* Passport Google OAuth 2.0
+* Cloudinary backend for Storing profile Image
+* Passport Google OAuth 2.0 Strategy
+* Passport Local Strategy
 
 ## Author
 
