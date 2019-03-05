@@ -34,7 +34,8 @@ module.exports = function(passport) {
       // options for google strategy
       clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-      callbackURL: '/users/google/redirect'
+      callbackURL: '/users/google/redirect',
+      userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
     }, (accessToken, refreshToken, profile, done) => {
 
       User.findOne({email : profile.emails[0].value})
